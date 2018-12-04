@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/btcsuite/btcd/btcjson"
+	btcjson "github.com/vpashka/btcd/btcjson"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
 	"github.com/btcsuite/btcd/wire"
@@ -669,7 +669,7 @@ func (c *Client) SendManyAsync(fromAccount string, amounts map[btcutil.Address]b
 	for addr, amount := range amounts {
 		convertedAmounts[addr.EncodeAddress()] = amount.ToBTC()
 	}
-	cmd := btcjson.NewSendManyCmd(fromAccount, convertedAmounts, nil, nil, nil, nil, nil, nil)
+	cmd := btcjson.NewSendMany8Cmd(fromAccount, convertedAmounts, nil, nil, nil, nil, nil, nil)
 	return c.sendCmd(cmd)
 }
 
@@ -698,7 +698,7 @@ func (c *Client) SendManyMinConfAsync(fromAccount string,
 	for addr, amount := range amounts {
 		convertedAmounts[addr.EncodeAddress()] = amount.ToBTC()
 	}
-	cmd := btcjson.NewSendManyCmd(fromAccount, convertedAmounts,
+	cmd := btcjson.NewSendMany8Cmd(fromAccount, convertedAmounts,
 		&minConfirms, nil, nil, nil, nil, nil)
 	return c.sendCmd(cmd)
 }
@@ -732,7 +732,7 @@ func (c *Client) SendManyCommentAsync(fromAccount string,
 	for addr, amount := range amounts {
 		convertedAmounts[addr.EncodeAddress()] = amount.ToBTC()
 	}
-	cmd := btcjson.NewSendManyCmd(fromAccount, convertedAmounts,
+	cmd := btcjson.NewSendMany8Cmd(fromAccount, convertedAmounts,
 		&minConfirms, &comment, nil, nil, nil, nil)
 	return c.sendCmd(cmd)
 }
@@ -782,7 +782,7 @@ func (c *Client) SendManySubtractFeeFromAsync(fromAccount string,
 		sublist = append(sublist, addr.EncodeAddress())
 	}
 
-	cmd := btcjson.NewSendManyCmd(fromAccount, convertedAmounts,
+	cmd := btcjson.NewSendMany8Cmd(fromAccount, convertedAmounts,
 		&minConfirms, &comment, &sublist, nil, nil, nil)
 
 	return c.sendCmd(cmd)
@@ -824,7 +824,7 @@ func (c *Client) SendMany8CmdAsync(fromAccount string,
 		}
 	}
 
-	cmd := btcjson.NewSendManyCmd(fromAccount, convertedAmounts,
+	cmd := btcjson.NewSendMany8Cmd(fromAccount, convertedAmounts,
 		&minConfirms, comment, &sublist, replaceable, confTarget, estimateMode)
 
 	return c.sendCmd(cmd)

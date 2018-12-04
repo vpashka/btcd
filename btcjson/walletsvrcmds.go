@@ -497,9 +497,31 @@ func NewSendFromCmd(fromAccount, toAddress string, amount float64, minConf *int,
 }
 
 // SendManyCmd defines the sendmany JSON-RPC command.
+type SendManyCmd struct {
+	FromAccount string
+	Amounts     map[string]float64 `jsonrpcusage:"{\"address\":amount,...}"` // In BTC
+	MinConf     *int               `jsonrpcdefault:"1"`
+	Comment     *string
+}
+
+// NewSendManyCmd returns a new instance which can be used to issue a sendmany
+// JSON-RPC command.
+//
+// The parameters which are pointers indicate they are optional.  Passing nil
+// for optional parameters will use the default value.
+func NewSendManyCmd(fromAccount string, amounts map[string]float64, minConf *int, comment *string) *SendManyCmd {
+	return &SendManyCmd{
+		FromAccount: fromAccount,
+		Amounts:     amounts,
+		MinConf:     minConf,
+		Comment:     comment,
+	}
+}
+
+// SendManyCmd defines the sendmany JSON-RPC command.
 // https://bitcoincore.org/en/doc/0.16.0/rpc/wallet/sendmany/
 // sendmany "fromaccount" {"address":amount,...} ( minconf "comment" ["address",...] replaceable conf_target "estimate_mode")
-type SendManyCmd struct {
+type SendMany8Cmd struct {
 	FromAccount     string
 	Amounts         map[string]float64 `jsonrpcusage:"{\"address\":amount,...}"` // In BTC
 	MinConf         *int               `jsonrpcdefault:"1"`
@@ -515,16 +537,16 @@ type SendManyCmd struct {
 //
 // The parameters which are pointers indicate they are optional.  Passing nil
 // for optional parameters will use the default value.
-func NewSendManyCmd(fromAccount string, amounts map[string]float64,
+func NewSendMany8Cmd(fromAccount string, amounts map[string]float64,
 	minConf *int,
 	comment *string,
 	subtractfeefrom *[]string,
 	replaceable *bool,
 	confTarget *int,
 	estimateMode *string,
-) *SendManyCmd {
+) *SendMany8Cmd {
 
-	return &SendManyCmd{
+	return &SendMany8Cmd{
 		FromAccount:     fromAccount,
 		Amounts:         amounts,
 		MinConf:         minConf,
@@ -705,7 +727,7 @@ func init() {
 	MustRegisterCmd("lockunspent", (*LockUnspentCmd)(nil), flags)
 	MustRegisterCmd("move", (*MoveCmd)(nil), flags)
 	MustRegisterCmd("sendfrom", (*SendFromCmd)(nil), flags)
-	MustRegisterCmd("sendmany", (*SendManyCmd)(nil), flags)
+	MustRegisterCmd("sendmany", (*SendMany8Cmd)(nil), flags)
 	MustRegisterCmd("sendtoaddress", (*SendToAddressCmd)(nil), flags)
 	MustRegisterCmd("setaccount", (*SetAccountCmd)(nil), flags)
 	MustRegisterCmd("settxfee", (*SetTxFeeCmd)(nil), flags)
