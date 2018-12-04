@@ -497,39 +497,43 @@ func NewSendFromCmd(fromAccount, toAddress string, amount float64, minConf *int,
 }
 
 // SendManyCmd defines the sendmany JSON-RPC command.
-type SendManyCmd struct {
-	FromAccount string
-	Amounts     map[string]float64 `jsonrpcusage:"{\"address\":amount,...}"` // In BTC
-	MinConf     *int               `jsonrpcdefault:"1"`
-	Comment     *string
-}
+// type SendManyCmd struct {
+// 	FromAccount string
+// 	Amounts     map[string]float64 `jsonrpcusage:"{\"address\":amount,...}"` // In BTC
+// 	MinConf     *int               `jsonrpcdefault:"1"`
+// 	Comment     *string
+// }
 
 // NewSendManyCmd returns a new instance which can be used to issue a sendmany
 // JSON-RPC command.
 //
 // The parameters which are pointers indicate they are optional.  Passing nil
 // for optional parameters will use the default value.
-func NewSendManyCmd(fromAccount string, amounts map[string]float64, minConf *int, comment *string) *SendManyCmd {
-	return &SendManyCmd{
-		FromAccount: fromAccount,
-		Amounts:     amounts,
-		MinConf:     minConf,
-		Comment:     comment,
-	}
-}
+// func NewSendManyCmd(fromAccount string, amounts map[string]float64, minConf *int, comment *string) *SendManyCmd {
+// 	return &SendManyCmd{
+// 		FromAccount: fromAccount,
+// 		Amounts:     amounts,
+// 		MinConf:     minConf,
+// 		Comment:     comment,
+// 		// Subtractfeefrom: nil,
+// 		// Replaceable:     nil,
+// 		// ConfTarget:      nil,
+// 		// EstimateMode:    nil,
+// 	}
+// }
 
 // SendManyCmd defines the sendmany JSON-RPC command.
 // https://bitcoincore.org/en/doc/0.16.0/rpc/wallet/sendmany/
 // sendmany "fromaccount" {"address":amount,...} ( minconf "comment" ["address",...] replaceable conf_target "estimate_mode")
-type SendMany8Cmd struct {
+type SendManyCmd struct {
 	FromAccount     string
 	Amounts         map[string]float64 `jsonrpcusage:"{\"address\":amount,...}"` // In BTC
 	MinConf         *int               `jsonrpcdefault:"1"`
-	Comment         *string            `jsonrpcdefault:\"\"`
-	Subtractfeefrom *[]string          `jsonrpcusage:"[\"address\",...]"`
-	Replaceable     *bool              `jsonrpcdefault:"false"`
-	ConfTarget      *int               `jsonrpcdefault:"1"`
-	EstimateMode    *string            `jsonrpcdefault:\"UNSET\"`
+	Comment         *string
+	Subtractfeefrom *[]string `jsonrpcusage:"[\"address\",...]"`
+	Replaceable     *bool     `jsonrpcdefault:"false"`
+	ConfTarget      *int      `jsonrpcdefault:"1"`
+	EstimateMode    *string   `jsonrpcdefault:\"UNSET\"`
 }
 
 // NewSendManyCmd returns a new instance which can be used to issue a sendmany
@@ -537,16 +541,16 @@ type SendMany8Cmd struct {
 //
 // The parameters which are pointers indicate they are optional.  Passing nil
 // for optional parameters will use the default value.
-func NewSendMany8Cmd(fromAccount string, amounts map[string]float64,
+func NewSendManyCmd(fromAccount string, amounts map[string]float64,
 	minConf *int,
 	comment *string,
 	subtractfeefrom *[]string,
 	replaceable *bool,
 	confTarget *int,
 	estimateMode *string,
-) *SendMany8Cmd {
+) *SendManyCmd {
 
-	return &SendMany8Cmd{
+	return &SendManyCmd{
 		FromAccount:     fromAccount,
 		Amounts:         amounts,
 		MinConf:         minConf,
@@ -727,7 +731,7 @@ func init() {
 	MustRegisterCmd("lockunspent", (*LockUnspentCmd)(nil), flags)
 	MustRegisterCmd("move", (*MoveCmd)(nil), flags)
 	MustRegisterCmd("sendfrom", (*SendFromCmd)(nil), flags)
-	MustRegisterCmd("sendmany", (*SendMany8Cmd)(nil), flags)
+	MustRegisterCmd("sendmany", (*SendManyCmd)(nil), flags)
 	MustRegisterCmd("sendtoaddress", (*SendToAddressCmd)(nil), flags)
 	MustRegisterCmd("setaccount", (*SetAccountCmd)(nil), flags)
 	MustRegisterCmd("settxfee", (*SetTxFeeCmd)(nil), flags)
