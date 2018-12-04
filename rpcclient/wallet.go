@@ -8,11 +8,12 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/btcsuite/btcd/btcjson"
+	// "github.com/vpashka/btcd/btcjson"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
 	"github.com/btcsuite/btcd/wire"
 	"github.com/btcsuite/btcutil"
+	btcjson "github.com/vpashka/btcd/btcjson"
 )
 
 // sendmany Estimate mode
