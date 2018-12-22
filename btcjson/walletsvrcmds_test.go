@@ -1241,6 +1241,35 @@ func TestWalletSvrCmds(t *testing.T) {
 				NewPassphrase: "new",
 			},
 		},
+		{
+			name: "estimatesmartfee",
+			newCmd: func() (interface{}, error) {
+				return btcjson.NewCmd("estimatesmartfee", 3)
+			},
+			staticCmd: func() interface{} {
+				return btcjson.NewEstimateSmartFeeCmd(3, nil)
+			},
+			marshalled: `{"jsonrpc":"1.0","method":"estimatesmartfee","params":[3],"id":1}`,
+			unmarshalled: &btcjson.EstimateSmartFeeCmd{
+				ConfTarget:   3,
+				EstimateMode: nil,
+			},
+		},
+		{
+			name: "estimatesmartfee optional2",
+			newCmd: func() (interface{}, error) {
+				return btcjson.NewCmd("estimatesmartfee", 3, "UNSET")
+			},
+			staticCmd: func() interface{} {
+				estimate := "UNSET"
+				return btcjson.NewEstimateSmartFeeCmd(3, &estimate)
+			},
+			marshalled: `{"jsonrpc":"1.0","method":"estimatesmartfee","params":[3,"UNSET"],"id":1}`,
+			unmarshalled: &btcjson.EstimateSmartFeeCmd{
+				ConfTarget:   3,
+				EstimateMode: btcjson.String("UNSET"),
+			},
+		},
 	}
 
 	t.Logf("Running %d tests", len(tests))

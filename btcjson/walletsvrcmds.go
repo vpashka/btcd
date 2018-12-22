@@ -671,6 +671,21 @@ func NewWalletPassphraseChangeCmd(oldPassphrase, newPassphrase string) *WalletPa
 	}
 }
 
+// EstimateSmartFeeCmd defines the estimatesmartfee JSON-RPC command.
+type EstimateSmartFeeCmd struct {
+	ConfTarget   int     // (numeric) Confirmation target in blocks (1 - 1008)
+	EstimateMode *string `jsonrpcdefault:\"UNSET\"`
+}
+
+// NewEstimateSmartFeeCmd returns a new instance which can be used to issue a estimatesmartfee
+// JSON-RPC command.
+func NewEstimateSmartFeeCmd(num int, estimateMode *string) *EstimateSmartFeeCmd {
+	return &EstimateSmartFeeCmd{
+		ConfTarget:   num,
+		EstimateMode: estimateMode,
+	}
+}
+
 func init() {
 	// The commands in this file are only usable with a wallet server.
 	flags := UFWalletOnly
@@ -714,4 +729,5 @@ func init() {
 	MustRegisterCmd("walletlock", (*WalletLockCmd)(nil), flags)
 	MustRegisterCmd("walletpassphrase", (*WalletPassphraseCmd)(nil), flags)
 	MustRegisterCmd("walletpassphrasechange", (*WalletPassphraseChangeCmd)(nil), flags)
+	MustRegisterCmd("estimatesmartfee", (*EstimateSmartFeeCmd)(nil), flags)
 }
