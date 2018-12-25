@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"strconv"
 
-	// "github.com/vpashka/btcd/btcjson"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
 	"github.com/btcsuite/btcd/wire"
@@ -2340,7 +2339,7 @@ func (r FutureGetInfoResult) Receive() (*btcjson.InfoWalletResult, error) {
 //
 // See GetInfo for the blocking version and more details.
 func (c *Client) GetInfoAsync() FutureGetInfoResult {
-	cmd := btcjson.NewGetInfoCmd()
+	cmd := btcjson.NewGetWalletInfoCmd()
 	return c.sendCmd(cmd)
 }
 
@@ -2351,13 +2350,6 @@ func (c *Client) GetInfo() (*btcjson.InfoWalletResult, error) {
 	return c.GetInfoAsync().Receive()
 }
 
-// EstimateSmartFeeResult: see https://bitcoincore.org/en/doc/0.16.0/rpc/util/estimatesmartfee/
-type EstimateSmartFeeResult struct {
-	FeeRate   float64   `json:"feerate"`
-	NumBlocks int       `json:"blocks"`
-	Errors    *[]string `jsonrpcusage:"[\"error\",...]"`
-}
-
 // FutureEstimateSmartFeeResult is a future promise to deliver the result of a
 // EstimateSmartFeeResultAsync RPC invocation (or an applicable error).
 type FutureEstimateSmartFeeResult chan *response
@@ -2365,14 +2357,14 @@ type FutureEstimateSmartFeeResult chan *response
 // Receive waits for the response promised by the future and returns the result
 // of setting an optional transaction fee per KB that helps ensure transactions
 // are processed quickly.  Most transaction are 1KB.
-func (r FutureEstimateSmartFeeResult) Receive() (*EstimateSmartFeeResult, error) {
+func (r FutureEstimateSmartFeeResult) Receive() (*btcjson.EstimateSmartFeeResult, error) {
 	res, err := receiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
 
 	// Unmarshal result
-	var smartfee EstimateSmartFeeResult
+	var smartfee btcjson.EstimateSmartFeeResult
 	err = json.Unmarshal(res, &smartfee)
 	if err != nil {
 		return nil, err
@@ -2396,11 +2388,11 @@ func (c *Client) EstimateSmartFeeAsync(blocks int, estimateMode *string) FutureE
 // for which the estimate is valid. Uses virtual transaction size as defined
 // in BIP 141 (witness data is discounted)..
 // https://bitcoincore.org/en/doc/0.16.0/rpc/util/estimatesmartfee/
-func (c *Client) EstimateSmartFee(blocks int) (*EstimateSmartFeeResult, error) {
+func (c *Client) EstimateSmartFee(blocks int) (*btcjson.EstimateSmartFeeResult, error) {
 	return c.EstimateSmartFeeAsync(blocks, nil).Receive()
 }
 
-func (c *Client) EstimateSmartFeeMode(blocks int, estimateMode string) (*EstimateSmartFeeResult, error) {
+func (c *Client) EstimateSmartFeeMode(blocks int, estimateMode string) (*btcjson.EstimateSmartFeeResult, error) {
 	return c.EstimateSmartFeeAsync(blocks, &estimateMode).Receive()
 }
 
