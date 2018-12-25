@@ -37,23 +37,20 @@ type GetTransactionResult struct {
 
 // InfoWalletResult models the data returned by the wallet server getinfo
 // command.
+// https://bitcoincore.org/en/doc/0.16.0/rpc/wallet/getwalletinfo/
 type InfoWalletResult struct {
-	Version         int32   `json:"version"`
-	ProtocolVersion int32   `json:"protocolversion"`
-	WalletVersion   int32   `json:"walletversion"`
-	Balance         float64 `json:"balance"`
-	Blocks          int32   `json:"blocks"`
-	TimeOffset      int64   `json:"timeoffset"`
-	Connections     int32   `json:"connections"`
-	Proxy           string  `json:"proxy"`
-	Difficulty      float64 `json:"difficulty"`
-	TestNet         bool    `json:"testnet"`
-	KeypoolOldest   int64   `json:"keypoololdest"`
-	KeypoolSize     int32   `json:"keypoolsize"`
-	UnlockedUntil   int64   `json:"unlocked_until"`
-	PaytxFee        float64 `json:"paytxfee"`
-	RelayFee        float64 `json:"relayfee"`
-	Errors          string  `json:"errors"`
+	WalletName            string  `json:"walletname"`
+	WalletVersion         float64 `json:"walletversion"`
+	Balance               float64 `json:"balance"`
+	UnconfirmedBalance    float64 `json:"unconfirmed_balance"`
+	ImmatureBalance       float64 `json:"immature_balance"`
+	TxCount               int64   `json:"txcount"`
+	KeyPoolOldest         int64   `json:"keypoololdest"`
+	KeyPoolSize           int64   `json:"keypoolsize"`
+	KeyPoolSizeHdInternal int64   `json:"keypoolsize_hd_internal"`
+	UnlockedUntil         *int64  `json:"unlocked_until"`
+	PaytxFee              float64 `json:"paytxfee"`
+	HdMasterKeyId         *string `json:"hdmasterkeyid"`
 }
 
 // ListTransactionsResult models the data from the listtransactions command.
@@ -158,4 +155,11 @@ type ValidateAddressWalletResult struct {
 type GetBestBlockResult struct {
 	Hash   string `json:"hash"`
 	Height int32  `json:"height"`
+}
+
+// EstimateSmartFeeResult: see https://bitcoincore.org/en/doc/0.16.0/rpc/util/estimatesmartfee/
+type EstimateSmartFeeResult struct {
+	FeeRate   float64   `json:"feerate"`
+	NumBlocks int       `json:"blocks"`
+	Errors    *[]string `jsonrpcusage:"[\"error\",...]"`
 }
