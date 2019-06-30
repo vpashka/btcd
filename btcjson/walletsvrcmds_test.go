@@ -972,7 +972,7 @@ func TestWalletSvrCmds(t *testing.T) {
 				Comment:         nil,
 				Subtractfeefrom: nil,
 				Replaceable:     btcjson.Bool(false),
-				ConfTarget:      btcjson.Int(1),
+				ConfTarget:      nil,
 				EstimateMode:    nil,
 			},
 		},
@@ -993,7 +993,7 @@ func TestWalletSvrCmds(t *testing.T) {
 				Comment:         nil,
 				Subtractfeefrom: nil,
 				Replaceable:     btcjson.Bool(false),
-				ConfTarget:      btcjson.Int(1),
+				ConfTarget:      nil,
 				EstimateMode:    nil,
 			},
 		},
@@ -1014,24 +1014,22 @@ func TestWalletSvrCmds(t *testing.T) {
 				Comment:         btcjson.String("comment"),
 				Subtractfeefrom: nil,
 				Replaceable:     btcjson.Bool(false),
-				ConfTarget:      btcjson.Int(1),
+				ConfTarget:      nil,
 				EstimateMode:    nil,
 			},
 		},
 		{
 			name: "sendmany optional3",
 			newCmd: func() (interface{}, error) {
-				return btcjson.NewCmd("sendmany", "from", `{"1Address":0.5}`, 6, "comment", `["1Address"]`, true, 1, "UNSET")
+				return btcjson.NewCmd("sendmany", "from", `{"1Address":0.5}`, 6, "comment", `["1Address"]`, true)
 			},
 			staticCmd: func() interface{} {
 				amounts := map[string]float64{"1Address": 0.5}
 				feefrom := []string{"1Address"}
 				replace := true
-				confTarget := 1
-				estimateMode := "UNSET"
-				return btcjson.NewSendManyCmd("from", amounts, btcjson.Int(6), btcjson.String("comment"), &feefrom, &replace, &confTarget, &estimateMode)
+				return btcjson.NewSendManyCmd("from", amounts, btcjson.Int(6), btcjson.String("comment"), &feefrom, &replace, nil, nil)
 			},
-			marshalled: `{"jsonrpc":"1.0","method":"sendmany","params":["from",{"1Address":0.5},6,"comment",["1Address"],true,1,"UNSET"],"id":1}`,
+			marshalled: `{"jsonrpc":"1.0","method":"sendmany","params":["from",{"1Address":0.5},6,"comment",["1Address"],true],"id":1}`,
 			unmarshalled: &btcjson.SendManyCmd{
 				FromAccount:     "from",
 				Amounts:         map[string]float64{"1Address": 0.5},
@@ -1039,8 +1037,8 @@ func TestWalletSvrCmds(t *testing.T) {
 				Comment:         btcjson.String("comment"),
 				Subtractfeefrom: &[]string{"1Address"},
 				Replaceable:     btcjson.Bool(true),
-				ConfTarget:      btcjson.Int(1),
-				EstimateMode:    btcjson.String("UNSET"),
+				ConfTarget:      nil,
+				EstimateMode:    nil,
 			},
 		},
 		{

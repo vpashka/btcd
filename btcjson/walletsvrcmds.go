@@ -506,8 +506,8 @@ type SendManyCmd struct {
 	Comment         *string            `jsonrpcdefault:\"\"`
 	Subtractfeefrom *[]string          `jsonrpcusage:"[\"address\",...]"`
 	Replaceable     *bool              `jsonrpcdefault:"false"`
-	ConfTarget      *int               `jsonrpcdefault:"1"`
-	EstimateMode    *string            `jsonrpcdefault:\"UNSET\"`
+	ConfTarget      *int
+	EstimateMode    *string
 }
 
 // NewSendManyCmd returns a new instance which can be used to issue a sendmany
