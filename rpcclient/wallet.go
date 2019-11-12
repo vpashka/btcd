@@ -23,6 +23,14 @@ const (
 	ESTIMATE_MODE_CONSERVATIVE string = "CONSERVATIVE"
 )
 
+// sendmany Estimate mode
+// https://bitcoincore.org/en/doc/0.16.0/rpc/wallet/sendmany/
+const (
+	ESTIMATE_MODE_UNSET        string = "UNSET"
+	ESTIMATE_MODE_ECONOMICAL   string = "ECONOMICAL"
+	ESTIMATE_MODE_CONSERVATIVE string = "CONSERVATIVE"
+)
+
 // *****************************
 // Transaction Listing Functions
 // *****************************

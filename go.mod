@@ -1,7 +1,7 @@
 module github.com/vpashka/btcd
 
 require (
-	github.com/btcsuite/btcd v0.0.0-20190109040709-5bda5314ca95
+	github.com/btcsuite/btcd v0.20.0-beta
 	github.com/btcsuite/btclog v0.0.0-20170628155309-84c8d2346e9f
 	github.com/btcsuite/btcutil v0.0.0-20190425235716-9e5f4b9a998d
 	github.com/btcsuite/go-socks v0.0.0-20170105172521-4720035b7bfd
