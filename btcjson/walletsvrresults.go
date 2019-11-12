@@ -159,3 +159,10 @@ type GetBestBlockResult struct {
 	Hash   string `json:"hash"`
 	Height int32  `json:"height"`
 }
+
+// EstimateSmartFeeResult: see https://bitcoincore.org/en/doc/0.16.0/rpc/util/estimatesmartfee/
+type EstimateSmartFeeResult struct {
+	FeeRate   float64   `json:"feerate"`
+	NumBlocks int       `json:"blocks"`
+	Errors    *[]string `jsonrpcusage:"[\"error\",...]"`
+}
